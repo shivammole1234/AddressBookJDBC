@@ -232,15 +232,51 @@ public class AddressBook {
 
 
     public void display_contact(){
-        for(Contact contact :contacts){
-            System.out.println("Name: " + contact.get_first_name() + " " + contact.get_last_name());
-            System.out.println("Address: " + contact.get_address());
-            System.out.println("City: " + contact.getCity());
-            System.out.println("State: " + contact.getState());
-            System.out.println("ZIP: " + contact.getZip());
-            System.out.println("Phone: " + contact.getPhoneNumber());
-            System.out.println("Email: " + contact.getEmail());
-            System.out.println("------------------------------");
+        Connection connection=Address_Book_JDBC_Conn.getConnection();
+        Statement statement=null;
+        ResultSet resultSet=null;
+
+        String query="select * from contacts";
+        try{
+            statement=connection.createStatement();
+            resultSet=statement.executeQuery(query);
+
+            boolean hashContacts=false;
+            // print table header
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("| %-15s | %-15s | %-20s | %-10s | %-10s | %-6s | %-15s | %-30s |\n",
+                    "First Name", "Last Name", "Address", "City", "State", "ZIP", "Phone", "Email");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            while(resultSet.next()){
+                hashContacts=true;
+
+                System.out.printf("| %-15s | %-15s | %-20s | %-10s | %-10s | %-6d | %-15d | %-30s |\n",
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("address"),
+                        resultSet.getString("city"),
+                        resultSet.getString("state"),
+                        resultSet.getInt("zip"),
+                        resultSet.getLong("phone_number"),
+                        resultSet.getString("email"));
+            }
+            if(!hashContacts){
+                System.out.println("Contact not found or DB is empty");
+            }
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+
+        }catch(SQLException e){
+            System.out.println("error in display conatct method :- "+e.getMessage());
+        }finally {
+            try {
+                if(resultSet!=null) resultSet.close();
+                if (statement !=null) statement.close();
+                if(connection != null) connection.close();
+            }catch (SQLException e){
+                System.out.println("error in display finally block closing all resources method :- "+e.getMessage());
+            }
         }
     }
 
