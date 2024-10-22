@@ -51,10 +51,10 @@ public class AddressBookMain {
 
                 case 2:
                     // edit contact
-                    System.out.println("emter the first name to search contact for edit");
-                    String edit_first_name=scanner.nextLine();
+                    System.out.println("emter the ID to search contact for edit");
+                    int edit_id=scanner.nextInt();
 
-                    boolean is_edited= addressBook.edit_contact(edit_first_name);
+                    boolean is_edited= addressBook.edit_contact(edit_id);
                     if(is_edited)
                         System.out.println("contact updated");
                     else
@@ -64,12 +64,12 @@ public class AddressBookMain {
 
                 case 3:
                     // delete contact
-                    System.out.println("emter the first name of contact to delete:");
-                    String delete_first_name = scanner.nextLine();
+                    System.out.println("Enter the ID to delete : ");
+                    int id_to_delete = scanner.nextInt();
 
-                    boolean is_deleted = addressBook.delete_contact(delete_first_name);
+                    boolean is_deleted = addressBook.delete_contact(id_to_delete);
                     if(is_deleted){
-                        System.out.println("contact deleted successfully");
+                        System.out.println("contact deleted successfully in switch case msg");
                     }else {
                         System.out.println("contact not found");
                     }
